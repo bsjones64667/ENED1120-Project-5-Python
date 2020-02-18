@@ -17,7 +17,7 @@ dist1B = [100, 500, 300, 1000] # distances to travel in order of occurance, add 
 """ Initialize drivebase variables """
 leftDrive = Motor(Port.C, Direction.COUNTERCLOCKWISE)
 rightDrive = Motor(Port.B, Direction.COUNTERCLOCKWISE)
-wheelDiameter = 68.8 # mm
+wheelDiameter = 75 # mm
 axelLength = 130 # mm, distance between center of wheels
 
 """ Initialize drivebase """
@@ -30,8 +30,10 @@ driveControls = drivebaseControls(robot)
 """ Subtask 1A """
 def subtask1A(distance, n):
     sign = 1 # sign of direction for loop,
+    forwardAng = (distance / driveControls.wheelCirc) * 360
+    backwardAng = 0
     for i in range(n):
-        driveControls.DriveDist(dist1A * sign)
+        driveControls.DriveDistRepeat(dist1A * sign, forwardAng, backwardAng)
         sign *= -1
 
 """ Subtask 1B """
@@ -41,6 +43,11 @@ def subtask1B(distance):
             driveControls.DriveDist(dist)
             driveControls.Turn180()
             
+
+""" Reset motors """
+leftDrive.reset_angle(0)
+rightDrive.reset_angle(0)
+
 
 """ Take input for which task to execute """
 currTask = -1 # error subtask, should be either 1.1 or 1.2
