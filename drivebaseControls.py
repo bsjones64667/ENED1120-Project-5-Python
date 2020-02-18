@@ -13,7 +13,7 @@ import math
 class drivebaseControls(object):
 
 
-    def __init__(self, drivebase): # TODO: Add gyro input once installed
+    def __init__(self, drivebase, gyro): # TODO: Add gyro input once installed
 
         # Initialize drivebase for controls
         self.drivebase = drivebase
@@ -22,6 +22,7 @@ class drivebaseControls(object):
         self.lMotor = self.drivebase.left_motor
         self.rMotor = self.drivebase.right_motor
         self.wheelCirc = self.drivebase.wheel_diameter * math.pi
+        self.gyro = gyro
 
 
     """ Function to brake drive base for 1 second, written for repetitive use of code lines """
@@ -34,7 +35,7 @@ class drivebaseControls(object):
 
     """ Turn 180 based on motor angle 
         (will be replaced by gyro code, not consistent, based on friction of surface) """
-    def Turn180(self):
+    """ def Turn180(self):
 
         # Reset angle of rotation check motor
         self.rMotor.reset_angle(0)
@@ -45,24 +46,25 @@ class drivebaseControls(object):
             pass
 
         # Brake
-        self.__BrakeStop()
+        self.__BrakeStop()""" 
     
 
     """ New code for turn 180 once gyro is installed """
-    """
-    def Turn180(self)
+    
+    def Turn180(self):
 
         # Reset gyro angle to 0
         self.gyro.reset_angle(0)
 
         # Move until desired angle is reached
         self.drivebase.drive(0, 60)
-        while self.gyro.angle() < 160: # A little under 180 as gyro measures angle late, mess with this value for consistency
+        while self.gyro.angle() < 34: # A little under 180 as gyro measures angle late, mess with this value for consistency
+            print(self.gyro.angle()) 
             pass
 
         # Brake and 1 second delay to ensure stop
         self.__BrakeStop()
-    """
+    
 
 
     """ Drive a certain distance, based on rotations of the motor and circumference of wheel """

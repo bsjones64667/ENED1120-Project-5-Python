@@ -13,7 +13,7 @@ from drivebaseControls import *
 """ Variables to change based on subtask given values, edit as needed """
 dist1A = 304.8 # distance for travel, in mm
 n1A = 10 # number of steps to complete subtask a
-dist1B = [100, 500, 300, 1000] # distances to travel in order of occurance, add or remove list values as needed, in mm
+dist1B = [100, 500, 300, 1] # distances to travel in order of occurance, add or remove list values as needed, in mm
 
 
 """ Initialize drivebase variables """
@@ -23,12 +23,16 @@ wheelDiameter = 75 # mm
 axelLength = 130 # mm, distance between center of wheels
 
 
+""" Initialize gyro sensor """
+gyro = GyroSensor(Port.S1)
+
+
 """ Initialize drivebase """
 robot = DriveBase(leftDrive, rightDrive, wheelDiameter, axelLength)
 
 
 """ Initialize drivebase controls """
-driveControls = drivebaseControls(robot)
+driveControls = drivebaseControls(robot, gyro)
 
 
 """ Subtask 1A """
@@ -78,8 +82,10 @@ while not Button.CENTER in brick.buttons():
 
 # Based on button input, execute task
 if currTask == 1.1:
+    wait(1000) # add a short delay to program execute
     subtask1A(dist1A, n1A)
 elif currTask == 1.2:
+    wait(1000) # add a short delay to program execute
     subtask1B(dist1B)
 else: # error, nothing executed
     brick.display.clear()
