@@ -9,30 +9,45 @@ from pybricks.tools import print, wait, StopWatch
 from pybricks.robotics import DriveBase
 from drivebaseControls import *
 
-# Variables to change based on subtask given values, edit as needed
-dist1A = 100 # distance for travel, in mm
+""" Variables to change based on subtask given values, edit as needed """
+dist1A = 304.8 # distance for travel, in mm
 n1A = 10 # number of steps to complete subtask a
-dist1B = [100, 100, 100, 100] # distances to travel in order of occurance, add or remove list values as needed, in mm
+dist1B = [100, 500, 300, 1000] # distances to travel in order of occurance, add or remove list values as needed, in mm
 
-# Initialize drivebase vars
+""" Initialize drivebase variables """
 leftDrive = Motor(Port.C, Direction.COUNTERCLOCKWISE)
 rightDrive = Motor(Port.B, Direction.COUNTERCLOCKWISE)
 wheelDiameter = 68.8 # mm
 axelLength = 130 # mm, distance between center of wheels
 
-# Initialize drivebase
+""" Initialize drivebase """
 robot = DriveBase(leftDrive, rightDrive, wheelDiameter, axelLength)
 
-# Initialize drivebase controls
+""" Initialize drivebase controls """
 driveControls = drivebaseControls(robot)
 
 
-# Take input from user for which subtask to run
+""" Subtask 1A """
+def subtask1A(distance, n):
+    sign = 1 # sign of direction for loop,
+    for i in range(n):
+        driveControls.DriveDist(dist1A * sign)
+        sign *= -1
+
+""" Subtask 1B """
+def subtask1B(distance):
+    for dist in distance:
+        for i in range(2):
+            driveControls.DriveDist(dist)
+            driveControls.Turn180()
+            
+
+""" Take input for which task to execute """
 currTask = -1 # error subtask, should be either 1.1 or 1.2
 brick.display.clear()
-brick.display.text("Left Button: Subtask 1A", (60, 50))
-brick.display.text("Right Button: Subtask 1B")
-brick.display.text("Middle Button to Confirm Selection")
+brick.display.text("L Button: Subtask 1A", (0, 50))
+brick.display.text("R Button: Subtask 1B")
+brick.display.text("M Button to Confirm")
 
 while not Button.CENTER in brick.buttons():
     if Button.LEFT in brick.buttons():
@@ -46,22 +61,12 @@ elif currTask == 1.2:
     subtask1B(dist1B)
 else:
     brick.display.clear()
-    brick.display.text("Error, no task selected. Rerun program.", (60, 50))
+    brick.display.text("Error, no task selected.", (0, 50))
+    brick.display.text("Rerun program.")
+    wait(5000)
 
 
-# Subtask 1A
-def subtask1A(distance, n):
-    sign = 1 # sign of direction for loop,
-    for i in range(n):
-        driveControls.DriveDist(dist1A * sign)
-        sign *= -1
 
-# Subtask 1B
-def subtask1B(distance):
-    for dist in distance:
-        for i in range(2):
-            driveControls.DriveDist(dist)
-            driveControls.Turn180()
 
 
 

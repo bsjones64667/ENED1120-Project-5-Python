@@ -26,9 +26,18 @@ class drivebaseControls(object):
         wait(1000)
 
     def DriveDist(self, distance): # distance in mm
+        self.lMotor.reset_angle(0)
+        self.rMotor.reset_angle(0)
         targetRots = distance / self.wheelCirc # number of rotations needed to reach target distance
         targetRots *= 360 # convert rotations to degrees
-        while self.lMotor.angle() < targetRots or self.rMotor.angle() < targetRots:
-            self.drivebase.drive(100, 0)
-        self.drivebase.stop(Stop.BRAKE)
-        wait(1000)
+        if distance < 0:
+            while self.lMotor.angle() > targetRots or self.rMotor.angle() > targetRots:
+                self.drivebase.drive(-100, 0)
+            self.drivebase.stop(Stop.BRAKE)
+            wait(1000)
+        else:
+            while self.lMotor.angle() < targetRots or self.rMotor.angle() < targetRots:
+                self.drivebase.drive(100, 0)
+            self.drivebase.stop(Stop.BRAKE)
+            wait(1000)
+        
